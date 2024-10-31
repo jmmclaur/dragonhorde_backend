@@ -1,4 +1,4 @@
-/* class DUPLICATE extends Error {
+class DUPLICATE extends Error {
   constructor(message) {
     super(message);
     this.statusCode = 409;
@@ -6,4 +6,4 @@
 }
 module.exports = {
   DUPLICATE,
-}; */
+};

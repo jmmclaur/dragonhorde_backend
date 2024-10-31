@@ -1,14 +1,20 @@
 // router
 // userRouter
 // not found error
-
 // itemRouter
+const router = require("express").Router();
 
-//router.use("/items", itemRouter);
-//router.use("/users", userRouter);
+const userRouter = require("./users");
 
-/* router.use(() => {
-  throw new NotFound("Resource not found");
-}); */
+const { NOT_FOUND } = require("../utils/errors/NOT_FOUND");
 
-// module.exports = router;
+const itemRouter = require("./clothingItems");
+
+router.use("/items", itemRouter);
+router.use("/users", userRouter);
+
+router.use(() => {
+  throw new NOT_FOUND("Resource not found");
+});
+
+module.exports = router;
