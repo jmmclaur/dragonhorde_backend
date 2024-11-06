@@ -18,7 +18,6 @@
 // signup
 
 // app.use((error, req, res, next))
-
 require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
@@ -28,10 +27,7 @@ const app = express();
 const { PORT = 3001 } = process.env;
 const { errors } = require("celebrate");
 
-const allowedOrigins = [
-  "https://wtwr.jmmclaur.jumpingcrab.com",
-  "http://localhost:3000",
-];
+const allowedOrigins = ["http://localhost:3000"];
 
 app.use(
   cors({
@@ -67,11 +63,10 @@ const {
   validateUserBody,
   validateAuthentication,
 } = require("./middlewares/validation");
-
 mongoose.set("strictQuery", false);
 
 mongoose
-  .connect("mongodb://127.0.0.1:27017/wtwr_db")
+  .connect("mongodb://127.0.0.1:27017/dragonhorde_db")
   .then(() => {
     console.log("Connected to DB");
   })
@@ -79,18 +74,17 @@ mongoose
 
 app.use(express.json());
 
+console.log("this is before " + PORT);
 app.listen(PORT, () => {
+  console.log("please");
   console.log(`Server is running on port ${PORT}`);
 });
+console.log("this is after " + PORT);
 
 const { login, createUser } = require("./controllers/users");
 
 const mainRouter = require("./routes/index");
 
-mongoose
-  .connect("mongodb://127.0.0.1:27017/wtwr_db")
-  .then(() => {})
-  .catch(console.error);
 app.use(express.json());
 app.use(requestLogger);
 
