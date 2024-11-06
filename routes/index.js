@@ -8,7 +8,7 @@ const userRouter = require("./users");
 
 const { NOT_FOUND } = require("../utils/errors/NOT_FOUND");
 
-const itemRouter = require("./clothingItems");
+const itemRouter = require("./dragons");
 
 router.use("/items", itemRouter);
 router.use("/users", userRouter);

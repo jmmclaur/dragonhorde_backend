@@ -26,6 +26,6 @@ const auth = async (req, res, next) => {
   }
 };
 
-__esModule.exports = {
+module.exports = {
   auth,
 };
