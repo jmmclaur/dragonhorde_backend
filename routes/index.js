@@ -10,7 +10,7 @@ const { NOT_FOUND } = require("../utils/errors/NOT_FOUND");
 
 const itemRouter = require("./dragons");
 
-router.use("/items", itemRouter);
+router.use("/dragons", itemRouter);
 router.use("/users", userRouter);
 
 router.use(() => {

@@ -27,8 +27,30 @@ const app = express();
 const { PORT = 3001 } = process.env;
 const { errors } = require("celebrate");
 
-const allowedOrigins = ["http://localhost:3000"];
+const allowedOrigins = ["http://localhost:3001"];
 
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true,
+  })
+);
+/*
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true,
+  })
+); */
+/*
 app.use(
   cors({
     origin: (origin, callback) => {
@@ -42,6 +64,15 @@ app.use(
     credentials: true,
   })
 );
+
+
+app.use(
+  cors({
+    origin: "*", // Allow all origins for testing
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true,
+  })
+); */
 
 app.options(
   "*",
@@ -63,6 +94,7 @@ const {
   validateUserBody,
   validateAuthentication,
 } = require("./middlewares/validation");
+
 mongoose.set("strictQuery", false);
 
 mongoose
@@ -74,12 +106,10 @@ mongoose
 
 app.use(express.json());
 
-console.log("this is before " + PORT);
 app.listen(PORT, () => {
   console.log("please");
   console.log(`Server is running on port ${PORT}`);
 });
-console.log("this is after " + PORT);
 
 const { login, createUser } = require("./controllers/users");
 
