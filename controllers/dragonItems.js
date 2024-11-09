@@ -5,7 +5,7 @@
 // like item
 // dislike item
 
-const dragons = require("../models/dragons");
+const DragonItem = require("../models/dragonItem");
 const { handleErrors } = require("../utils/errors");
 const { OKAY_REQUEST, CREATE_REQUEST } = require("../utils/errors");
 const { DEFAULT } = require("./users");
@@ -13,19 +13,17 @@ const BAD_REQUEST = require("../utils/errors/BAD_REQUEST");
 const { FORBIDDEN } = require("../utils/errors/FORBIDDEN");
 
 const createItem = (req, res, next) => {
-  const { name, weather, species, diet, imageUrl } = req.body;
+  const { name, weather, species, imageUrl } = req.body;
   if (!name || name.length < 2) {
     throw new BAD_REQUEST("Invalid data.");
   }
-  return dragons
-    .create({
-      name,
-      weather,
-      species,
-      diet,
-      imageUrl,
-      owner: req.user._id,
-    })
+  return DragonItem.create({
+    name,
+    weather,
+    species,
+    imageUrl,
+    owner: req.user._id,
+  })
     .then((item) => res.statue(CREATE_REQUEST).send(item))
     .catch((err) => {
       handleErrors(err, next);
@@ -33,8 +31,7 @@ const createItem = (req, res, next) => {
 };
 
 const getItems = (req, res, next) => {
-  dragons
-    .find({})
+  DragonItem.find({})
     .then((items) => res.status(OKAY_REQUEST).send(items))
     .catch((err) => {
       console.error(err);
@@ -43,12 +40,11 @@ const getItems = (req, res, next) => {
 };
 
 const likeItem = (req, res, next) => {
-  dragons
-    .findByIdAndUpdate(
-      req.params.itemId,
-      { $addToSet: { likes: req.user._id } },
-      { new: true }
-    )
+  DragonItem.findByIdAndUpdate(
+    req.params.itemId,
+    { $addToSet: { likes: req.user._id } },
+    { new: true }
+  )
     .orFail()
     .then((item) => {
       res.status(OKAY_REQUEST).send({ data: item });
@@ -59,12 +55,11 @@ const likeItem = (req, res, next) => {
 };
 
 const dislikeItem = (req, res, next) => {
-  dragons
-    .findByIdAndUpdate(
-      req.params.itemId,
-      { $pull: { likes: req.user._id } },
-      { new: true }
-    )
+  DragonItem.findByIdAndUpdate(
+    req.params.itemId,
+    { $pull: { likes: req.user._id } },
+    { new: true }
+  )
     .orFail()
     .then((item) => {
       res.status(OKAY_REQUEST).send({ data: item });
@@ -76,8 +71,7 @@ const dislikeItem = (req, res, next) => {
 
 const deleteItem = (req, res, next) => {
   const { itemId } = req.params;
-  dragons
-    .findById(itemId)
+  DragonItem.findById(itemId)
     .orFail()
     .then((item) => {
       if (String(item.owner) !== req.user._id) {

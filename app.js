@@ -27,15 +27,17 @@ const app = express();
 const { PORT = 3001 } = process.env;
 const { errors } = require("celebrate");
 
-const allowedOrigins = ["http://localhost:3001"];
+//const allowedOrigins = ["http://localhost:3001"];
 
+app.use(cors());
+/*
 app.use(
   cors({
     origin: "http://localhost:3000",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
   })
-);
+); */
 /*
 app.use(
   cors({
@@ -73,7 +75,7 @@ app.use(
     credentials: true,
   })
 ); */
-
+/*
 app.options(
   "*",
   cors({
@@ -87,7 +89,7 @@ app.options(
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
   })
-);
+); */
 
 const { requestLogger, errorLogger } = require("./middlewares/logger");
 const {

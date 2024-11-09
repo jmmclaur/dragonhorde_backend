@@ -12,7 +12,7 @@ const {
   likeItem,
   dislikeItem,
   deleteItem,
-} = require("../controllers/dragons");
+} = require("../controllers/dragonItems");
 
 router.post("/", auth, validateCardBody, createItem);
 router.get("/", getItems);

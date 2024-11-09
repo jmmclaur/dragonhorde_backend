@@ -8,12 +8,22 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const User = require("./user");
 
-const dragonSchema = new mongoose.Schema({
+const dragonItemSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
     minlength: 2,
     maxlength: 30,
+  },
+  weather: {
+    type: String,
+    required: true,
+    enum: ["hot", "warm", "cold"],
+  },
+  species: {
+    type: String,
+    required: true,
+    enum: ["chromatic", "metallic"],
   },
   imageUrl: {
     type: String,
@@ -43,4 +53,4 @@ const dragonSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("dragon", dragonSchema);
+module.exports = mongoose.model("dragonItem", dragonItemSchema);
