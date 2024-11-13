@@ -1,4 +1,4 @@
-class DEFAULT extends Error {
+class SERVER_ERROR extends Error {
   constructor(message) {
     super(message);
     this.statusCode = 500;
@@ -6,5 +6,5 @@ class DEFAULT extends Error {
 }
 
 module.exports = {
-  DEFAULT,
+  SERVER_ERROR,
 };

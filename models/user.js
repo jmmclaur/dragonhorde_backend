@@ -1,30 +1,28 @@
 // mongoose
 // validator
 // bcrypt
-
 // userSchema (name, avatar, email, password)
-
 // find user by credentials
 
+//New Attempt
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
-
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, "The name field is required."],
+    required: [true, "The name field is required"],
     minlength: [2, "Name must be at least 2 characters long"],
-    maxlength: [30, "Name must be no more than 30 characters"],
+    maxlength: [30, "Name must be no more than 30 characters long"],
   },
   avatar: {
     type: String,
-    required: [true, "The avatar field is required."],
+    required: [true, "The avatar field is required"],
     validate: {
       validator(value) {
         return validator.isURL(value);
       },
-      message: "You must enter a valid URL.",
+      message: "You must enter a valid URL",
     },
   },
   email: {
@@ -34,9 +32,8 @@ const userSchema = new mongoose.Schema({
       validator(value) {
         return validator.isEmail(value);
       },
-      message: "You must enter a valid email.",
+      message: "You must enter a valid email",
     },
-    unique: true,
   },
   password: {
     type: String,
@@ -44,7 +41,6 @@ const userSchema = new mongoose.Schema({
     select: false,
   },
 });
-
 userSchema.statics.findUserByCredentials = function (email, password) {
   return this.findOne({ email })
     .select("+password")
@@ -60,5 +56,4 @@ userSchema.statics.findUserByCredentials = function (email, password) {
       });
     });
 };
-
 module.exports = mongoose.model("user", userSchema);

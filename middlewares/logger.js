@@ -4,6 +4,7 @@
 // errorLogger
 // module.exports = { requestLogger, errorLogger };
 
+/*
 const winston = require("winston");
 const expressWinston = require("express-winston");
 
@@ -43,3 +44,4 @@ module.exports = {
   requestLogger,
   errorLogger,
 };
+*/

@@ -10,6 +10,7 @@
 
 // module.exports = { validateAuthentication, validateUserBody, validateId, validateCardBody, validateUser };
 
+/*
 const { Joi, celebrate } = require("celebrate");
 const validator = require("validator");
 
@@ -99,3 +100,4 @@ module.exports = {
   validateCardBody,
   validateUser,
 };
+*/

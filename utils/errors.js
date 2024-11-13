@@ -1,7 +1,7 @@
 const { BAD_REQUEST } = require("./errors/BAD_REQUEST");
 const { NOT_FOUND } = require("./errors/NOT_FOUND");
 const { DUPLICATE } = require("./errors/DUPLICATE");
-const { DEFAULT } = require("./errors/DEFAULT");
+const { SERVER_ERROR } = require("./errors/SERVER_ERROR");
 const { NOT_AUTHORIZED } = require("./errors/NOT_AUTHORIZED");
 const { FORBIDDEN } = require("./errors/FORBIDDEN");
 
@@ -22,7 +22,7 @@ function handleErrors(err, next) {
   if (err.statusCode === 403) {
     return next(new FORBIDDEN("Forbidden Error"));
   }
-  return next(new DEFAULT("Server Error"));
+  return next(new SERVER_ERROR("Server Error"));
 }
 
 module.exports = {
@@ -30,7 +30,7 @@ module.exports = {
   BAD_REQUEST: 400,
   NOT_FOUND: 404,
   DUPLICATE: 409,
-  DEFAULT: 500,
+  SERVER_ERROR: 500,
   NOT_AUTHORIZED: 401,
   FORBIDDEN: 403,
 };

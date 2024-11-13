@@ -5,41 +5,66 @@
 // like item
 // dislike item
 
+//New Attempt
 const DragonItem = require("../models/dragonItem");
-const { handleErrors } = require("../utils/errors");
-const { OKAY_REQUEST, CREATE_REQUEST } = require("../utils/errors");
-const { DEFAULT } = require("./users");
-const BAD_REQUEST = require("../utils/errors/BAD_REQUEST");
-const { FORBIDDEN } = require("../utils/errors/FORBIDDEN");
-
-const createItem = (req, res, next) => {
-  const { name, weather, species, imageUrl } = req.body;
-  if (!name || name.length < 2) {
-    throw new BAD_REQUEST("Invalid data.");
-  }
-  return DragonItem.create({
-    name,
-    weather,
-    species,
-    imageUrl,
-    owner: req.user._id,
-  })
-    .then((item) => res.statue(CREATE_REQUEST).send(item))
-    .catch((err) => {
-      handleErrors(err, next);
+const {
+  BAD_REQUEST,
+  NOT_FOUND,
+  SERVER_ERROR,
+  FORBIDDEN,
+} = require("../utils/errors");
+const createItem = (req, res) => {
+  const { name, weather, imageUrl } = req.body;
+  DragonItem.create({ name, weather, imageUrl, owner: req.user._id })
+    .then((item) => {
+      res.send({ data: item });
+    })
+    .catch((error) => {
+      if (error.name === "ValidationError") {
+        res.status(BAD_REQUEST).send({ message: "Validation Error" });
+      } else {
+        res
+          .status(SERVER_ERROR)
+          .send({ message: "An error has occurred on the server" });
+      }
     });
 };
-
-const getItems = (req, res, next) => {
+const getItems = (req, res) => {
   DragonItem.find({})
-    .then((items) => res.status(OKAY_REQUEST).send(items))
+    .then((items) => res.send(items))
     .catch((err) => {
       console.error(err);
-      return next(new DEFAULT("An error has occurred on the server."));
+      return res
+        .status(SERVER_ERROR)
+        .send({ message: "An error has occurred on the server" });
     });
 };
-
-const likeItem = (req, res, next) => {
+const deleteItem = (req, res) => {
+  const { itemId } = req.params;
+  DragonItem.findById(itemId)
+    .orFail()
+    .then((item) => {
+      if (String(item.owner) !== req.user._id) {
+        return res.status(FORBIDDEN).send({ message: "Access unauthorized" });
+      }
+      return item
+        .deleteOne()
+        .then(() => res.status(200).send({ message: "Successfully deleted" }));
+    })
+    .catch((err) => {
+      console.error(err);
+      if (err.name === "DocumentNotFoundError") {
+        return res.status(NOT_FOUND).send({ message: "Document not found" });
+      }
+      if (err.name === "CastError") {
+        return res.status(BAD_REQUEST).send({ message: "Invalid data" });
+      }
+      return res
+        .status(SERVER_ERROR)
+        .SEND({ message: "An error has occurred on the server" });
+    });
+};
+const likeItem = (req, res) => {
   DragonItem.findByIdAndUpdate(
     req.params.itemId,
     { $addToSet: { likes: req.user._id } },
@@ -47,14 +72,22 @@ const likeItem = (req, res, next) => {
   )
     .orFail()
     .then((item) => {
-      res.status(OKAY_REQUEST).send({ data: item });
+      res.send({ data: item });
     })
     .catch((err) => {
-      handleErrors(err, next);
+      console.error(`Error ${err.name} with message ${err.message}`);
+      if (err.name === "DocumentNotFoundError") {
+        return res.status(NOT_FOUND).send({ message: "Document not found" });
+      }
+      if (err.name === "CastError") {
+        return res.status(BAD_REQUEST).send({ message: "Invalid data" });
+      }
+      return res
+        .status(SERVER_ERROR)
+        .send({ message: "An error has occurred on the server" });
     });
 };
-
-const dislikeItem = (req, res, next) => {
+const dislikeItem = (req, res) => {
   DragonItem.findByIdAndUpdate(
     req.params.itemId,
     { $pull: { likes: req.user._id } },
@@ -62,28 +95,19 @@ const dislikeItem = (req, res, next) => {
   )
     .orFail()
     .then((item) => {
-      res.status(OKAY_REQUEST).send({ data: item });
+      res.send({ data: item });
     })
     .catch((err) => {
-      handleErrors(err, next);
-    });
-};
-
-const deleteItem = (req, res, next) => {
-  const { itemId } = req.params;
-  DragonItem.findById(itemId)
-    .orFail()
-    .then((item) => {
-      if (String(item.owner) !== req.user._id) {
-        return next(new FORBIDDEN("Access unauthorized."));
+      console.error(`Error ${err.name} with message ${err.message}`);
+      if (err.name === "DocumentNotFoundError") {
+        return res.status(NOT_FOUND).send({ message: "Document not found" });
       }
-      return item
-        .deleteOne()
-        .then(() => res.send({ message: "Successfully deleted." }));
-    })
-    .catch((err) => {
-      handleErrors(err, next);
+      if (err.name === "CastError") {
+        return res.status(BAD_REQUEST).send({ message: "Invalid data" });
+      }
+      return res
+        .status(SERVER_ERROR)
+        .send({ message: "An error has occurred on the server" });
     });
 };
-
-module.exports = { createItem, getItems, likeItem, dislikeItem, deleteItem };
+module.exports = { createItem, getItems, deleteItem, likeItem, dislikeItem };
