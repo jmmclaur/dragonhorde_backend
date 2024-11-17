@@ -1,11 +1,3 @@
-// dragons
-// errors
-// get item
-// delete item
-// like item
-// dislike item
-
-//New Attempt
 const DragonItem = require("../models/dragonItem");
 const {
   BAD_REQUEST,
@@ -13,9 +5,10 @@ const {
   SERVER_ERROR,
   FORBIDDEN,
 } = require("../utils/errors");
+
 const createItem = (req, res) => {
-  const { name, weather, imageUrl } = req.body;
-  DragonItem.create({ name, weather, imageUrl, owner: req.user._id })
+  const { name, weather, imageUrl, species } = req.body;
+  DragonItem.create({ name, weather, imageUrl, species, owner: req.user._id })
     .then((item) => {
       res.send({ data: item });
     })

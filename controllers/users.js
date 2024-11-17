@@ -1,14 +1,3 @@
-// bcrypt
-// jwt
-// User
-// errors
-
-// createUser
-// login
-// getCurrentUser
-// modifyUserData
-
-//New Attempt
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET } = require("../utils/config");
@@ -20,6 +9,7 @@ const {
   DUPLICATE,
   NOT_AUTHORIZED,
 } = require("../utils/errors");
+
 const createUser = async (req, res) => {
   const { name, avatar, email, password } = req.body;
   console.log(
@@ -85,7 +75,7 @@ const login = (req, res) => {
           .status(NOT_AUTHORIZED)
           .send({ message: "Unauthorized request" });
       }
-      return res.status(INTERNAL_SERVER_ERROR).send({
+      return res.status(SERVER_ERROR).send({
         message: "Internal server error from the catch in the login controller",
       });
     });

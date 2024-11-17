@@ -1,13 +1,7 @@
-// mongoose
-// validator
-// bcrypt
-// userSchema (name, avatar, email, password)
-// find user by credentials
-
-//New Attempt
 const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,

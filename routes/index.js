@@ -1,15 +1,10 @@
-// router
-// userRouter
-// not found error
-// itemRouter
-
-//New Attempt
 const router = require("express").Router();
 const { NOT_FOUND } = require("../utils/errors");
 const userRouter = require("./users");
 const itemRouter = require("./dragonItems");
 const { auth } = require("../middlewares/auth");
 const { login, createUser } = require("../controllers/users");
+
 router.use("/users", auth, userRouter);
 router.use("/items", itemRouter);
 router.post("/signin", login);

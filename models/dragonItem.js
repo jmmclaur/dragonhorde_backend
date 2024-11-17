@@ -1,9 +1,3 @@
-// mongoose
-// validator
-// User
-// dragonSchema (name, species, imageUrl, diet, owner, likes, createdAt)
-
-//New Attempt
 const mongoose = require("mongoose");
 const validator = require("validator");
 const User = require("./user");

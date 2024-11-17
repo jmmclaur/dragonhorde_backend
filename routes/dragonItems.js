@@ -1,9 +1,3 @@
-// routers
-// { auth }
-// { validateCardBody, validateId }
-// const { createItem, getItems, likeItem, dislikeItem, deleteItem}
-
-//New Attempt
 const router = require("express").Router();
 const { auth } = require("../middlewares/auth");
 const {
@@ -13,6 +7,7 @@ const {
   likeItem,
   dislikeItem,
 } = require("../controllers/dragonItems");
+
 router.post("/", auth, createItem);
 router.get("/", getItems);
 router.delete("/:itemId", auth, deleteItem);
