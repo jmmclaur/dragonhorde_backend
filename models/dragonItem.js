@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const User = require("./user");
+//const { likeItem } = require("../controllers/dragonItems");
 
 const dragonItemSchema = new mongoose.Schema({
   name: {
@@ -34,6 +35,13 @@ const dragonItemSchema = new mongoose.Schema({
     ref: User,
     required: true,
   },
+  likes: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "user",
+      default: [],
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now,

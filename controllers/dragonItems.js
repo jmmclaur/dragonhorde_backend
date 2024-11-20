@@ -8,6 +8,7 @@ const {
 
 const createItem = (req, res) => {
   const { name, weather, imageUrl, species } = req.body;
+
   DragonItem.create({ name, weather, imageUrl, species, owner: req.user._id })
     .then((item) => {
       res.send({ data: item });
