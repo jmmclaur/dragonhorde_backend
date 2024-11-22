@@ -23,7 +23,7 @@ const dragonItemSchema = new mongoose.Schema({
   weather: {
     type: String,
     required: true,
-    enum: ["hot", "warm", "cold"],
+    enum: ["hot", "warm", "Cold"],
   },
   species: {
     type: String,
