@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
 const User = require("./user");
-//const { likeItem } = require("../controllers/dragonItems");
 
 const dragonItemSchema = new mongoose.Schema({
   name: {
