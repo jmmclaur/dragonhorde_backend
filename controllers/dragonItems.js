@@ -6,9 +6,10 @@ const {
   FORBIDDEN,
 } = require("../utils/errors");
 
+console.log("hi");
 const createItem = (req, res) => {
   const { name, weather, imageUrl, species } = req.body;
-
+  console.log(weather);
   DragonItem.create({ name, weather, imageUrl, species, owner: req.user._id })
     .then((item) => {
       res.send({ data: item });
